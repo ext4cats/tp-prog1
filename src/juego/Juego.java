@@ -5,10 +5,12 @@ import entorno.InterfaceJuego;
 
 public class Juego extends InterfaceJuego {
     private final Entorno entorno;
+    private final Jugador jugador;
     private final Plataforma[] plataformas;
 
     private Juego() {
         this.entorno = new Entorno(this, "Al Rescate de los Gnomos", 800, 600);
+        this.jugador = new Jugador(400, 0);
         this.plataformas = this.generarPlataformas();
     }
 
@@ -19,9 +21,22 @@ public class Juego extends InterfaceJuego {
 
     @Override
     public void tick() {
-        for (Plataforma plataforma : this.plataformas) {
-            plataforma.dibujar(this.entorno);
-        }
+        boolean moviendoDerecha = entorno.estaPresionada(entorno.TECLA_DERECHA) || entorno.estaPresionada('d');
+        boolean moviendoIzquierda = entorno.estaPresionada(entorno.TECLA_IZQUIERDA) || entorno.estaPresionada('a');
+        boolean saltando = entorno.sePresiono(entorno.TECLA_ARRIBA) || entorno.estaPresionada('w');
+        if (moviendoDerecha) jugador.moverDerecha();
+        if (moviendoIzquierda) jugador.moverIzquierda();
+        if (saltando) jugador.saltar();
+        jugador.actualizar();
+        if (jugador.y() >= 255) jugador.aterrizar();
+        if (jugador.x() >= entorno.ancho() + 30) jugador.teletransportar(-29, jugador.y());
+        if (jugador.x() <= -30) jugador.teletransportar(entorno.ancho() + 29, jugador.y());
+        this.dibujarObjetos();
+    }
+
+    private void dibujarObjetos() {
+        for (Plataforma plataforma : this.plataformas) plataforma.dibujar(this.entorno);
+        this.jugador.dibujar(this.entorno);
     }
 
     private Plataforma[] generarPlataformas() {
