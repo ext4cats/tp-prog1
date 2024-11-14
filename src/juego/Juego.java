@@ -5,10 +5,12 @@ import entorno.InterfaceJuego;
 
 public class Juego extends InterfaceJuego {
     private final Entorno entorno;
+    private final Jugador jugador;
     private final Plataforma[] plataformas;
 
     private Juego() {
         this.entorno = new Entorno(this, "Al Rescate de los Gnomos", 800, 600);
+        this.jugador = new Jugador(100, 355);
         this.plataformas = this.generarPlataformas();
     }
 
@@ -23,7 +25,8 @@ public class Juego extends InterfaceJuego {
     }
 
     private void dibujarObjetos() {
-        for (Plataforma plataforma : plataformas) plataforma.dibujar(this.entorno);
+        for (Plataforma plataforma : this.plataformas) plataforma.dibujar(this.entorno);
+        this.jugador.dibujar(this.entorno);
     }
 
     private Plataforma[] generarPlataformas() {
