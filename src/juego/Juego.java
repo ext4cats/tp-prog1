@@ -21,6 +21,12 @@ public class Juego extends InterfaceJuego {
 
     @Override
     public void tick() {
+        boolean moviendoIzquierda = this.entorno.estaPresionada(entorno.TECLA_IZQUIERDA) || this.entorno.estaPresionada('a');
+        boolean moviendoDerecha = this.entorno.estaPresionada(entorno.TECLA_DERECHA) || this.entorno.estaPresionada('d');
+        if (moviendoIzquierda) this.jugador.acelerarIzquierda();
+        if (moviendoDerecha) this.jugador.acelerarDerecha();
+        this.jugador.aplicarVelocidad();
+        this.jugador.aplicarFriccion();
         this.dibujarObjetos();
     }
 
