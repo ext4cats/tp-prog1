@@ -4,7 +4,7 @@ import entorno.Entorno;
 
 import java.awt.*;
 
-public class Jugador {
+public class Jugador implements Rectangulo {
     private static final double ANCHO = 30;
     private static final double ALTO = 60;
     private static final double ACELERACION = 0.2;
@@ -42,5 +42,25 @@ public class Jugador {
 
     public void dibujar(Entorno entorno) {
         entorno.dibujarRectangulo(this.x, this.y, ANCHO, ALTO, 0, Color.YELLOW);
+    }
+
+    @Override
+    public double x() {
+        return this.x;
+    }
+
+    @Override
+    public double y() {
+        return this.y;
+    }
+
+    @Override
+    public double ancho() {
+        return ANCHO;
+    }
+
+    @Override
+    public double alto() {
+        return ALTO;
     }
 }
