@@ -3,14 +3,21 @@ package juego;
 import entorno.Entorno;
 import entorno.InterfaceJuego;
 
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Juego extends InterfaceJuego {
     private final Entorno entorno;
-    private final Jugador jugador;
+    private final List<Enemigo> enemigos;
     private final Plataforma[] plataformas;
+    private Jugador jugador;
 
     private Juego() {
         this.entorno = new Entorno(this, "Al Rescate de los Gnomos", 800, 600);
         this.jugador = new Jugador(100, 355);
+        this.enemigos = new ArrayList<>();
+        enemigos.add(new Enemigo(400, 0));
         this.plataformas = this.generarPlataformas();
     }
 
@@ -21,6 +28,12 @@ public class Juego extends InterfaceJuego {
 
     @Override
     public void tick() {
+        if (jugador == null) {
+            entorno.cambiarFont("serif", 32, Color.RED);
+            entorno.escribirTexto("GAME OVER", 300, 300);
+            return;
+        }
+
         boolean moviendoIzquierda = this.entorno.estaPresionada(entorno.TECLA_IZQUIERDA) || this.entorno.estaPresionada('a');
         boolean moviendoDerecha = this.entorno.estaPresionada(entorno.TECLA_DERECHA) || this.entorno.estaPresionada('d');
         if (moviendoIzquierda) this.jugador.acelerarIzquierda();
@@ -52,11 +65,25 @@ public class Juego extends InterfaceJuego {
             }
         }
 
+        for (Enemigo enemigo : this.enemigos) {
+            enemigo.mover();
+            if (enemigo.colisionaCon(jugador)) {
+                jugador = null;
+                return;
+            }
+            for (Plataforma plataforma : this.plataformas) {
+                if (enemigo.colisionaCon(plataforma)) {
+                    enemigo.aterrizar(plataforma);
+                }
+            }
+        }
+
         this.dibujarObjetos();
     }
 
     private void dibujarObjetos() {
         for (Plataforma plataforma : this.plataformas) plataforma.dibujar(this.entorno);
+        for (Enemigo enemigo : this.enemigos) enemigo.dibujar(this.entorno);
         this.jugador.dibujar(this.entorno);
     }
 
