@@ -109,6 +109,14 @@ public class Juego extends InterfaceJuego {
         while (bolasFuegoIterator.hasNext()) {
             BolaFuego bolaFuego = bolasFuegoIterator.next();
             bolaFuego.mover();
+
+            for (Plataforma plataforma : plataformas) {
+                if (bolaFuego.colisionaCon(plataforma)) {
+                    bolasFuegoIterator.remove();
+                    break;
+                }
+            }
+
             ListIterator<Enemigo> enemigosIterator = enemigos.listIterator();
             while (enemigosIterator.hasNext()) {
                 Enemigo enemigo = enemigosIterator.next();
