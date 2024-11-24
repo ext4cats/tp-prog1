@@ -47,6 +47,11 @@ public class Juego extends InterfaceJuego {
             return;
         }
 
+        if (jugador.bordeAlto() > 600) {
+            jugador = null;
+            return;
+        }
+
         EstadoJuego estadoJuego = contadores.estadoJuego();
         if (estadoJuego == EstadoJuego.GANADO) {
             entorno.cambiarFont("serif", 32, Color.GREEN);
