@@ -132,6 +132,13 @@ public class Juego extends InterfaceJuego {
         while (gnomosIterator.hasNext()) {
             Gnomo gnomo = gnomosIterator.next();
             gnomo.mover();
+
+            if (gnomo.bordeAlto() > 600) {
+                gnomosIterator.remove();
+                contadores.agregarGnomoPerdido();
+                continue;
+            }
+
             if (!gnomo.estaAterrizado()) {
                 for (Plataforma plataforma : this.plataformas) {
                     if (gnomo.colisionaCon(plataforma)) {
