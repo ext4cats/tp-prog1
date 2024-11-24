@@ -7,7 +7,7 @@ import java.awt.*;
 public class Gnomo implements Colisionable {
     private static final double ANCHO = 20;
     private static final double ALTO = 40;
-    private static final double VELOCIDAD_HORIZONTAL = 1;
+    private static final double VELOCIDAD_HORIZONTAL = 0.65;
     private static final double VELOCIDAD_VERTICAL = 1;
     private Plataforma plataforma;
     private Direccion direccion;
