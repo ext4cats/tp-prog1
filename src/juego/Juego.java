@@ -47,6 +47,21 @@ public class Juego extends InterfaceJuego {
             return;
         }
 
+        EstadoJuego estadoJuego = contadores.estadoJuego();
+        if (estadoJuego == EstadoJuego.GANADO) {
+            entorno.cambiarFont("serif", 32, Color.GREEN);
+            entorno.escribirTexto("VICTORIA", 300, 300);
+            entorno.cambiarFont("serif", 16, Color.GREEN);
+            entorno.escribirTexto("Haz salvado a todos los gnomos.", 250, 350);
+            return;
+        } else if (estadoJuego == EstadoJuego.PERDIDO) {
+            entorno.cambiarFont("serif", 32, Color.RED);
+            entorno.escribirTexto("DERROTA", 300, 300);
+            entorno.cambiarFont("serif", 16, Color.RED);
+            entorno.escribirTexto("Haz perdido demasiados gnomos.", 250, 350);
+            return;
+        }
+
         if (temporizadorEnemigo == 0) {
             int lado = random.nextInt(2);
             int spawn;
