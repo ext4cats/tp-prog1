@@ -6,6 +6,7 @@ import entorno.InterfaceJuego;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Random;
 
 public class Juego extends InterfaceJuego {
@@ -13,12 +14,16 @@ public class Juego extends InterfaceJuego {
     private final Entorno entorno;
     private final List<Enemigo> enemigos;
     private final Plataforma[] plataformas;
-    private int temporizadorSpawn;
+    private final List<Gnomo> gnomos;
+    private int temporizadorEnemigo;
+    private int temporizadorGnomo;
     private Jugador jugador;
 
     private Juego() {
         this.random = new Random();
-        this.temporizadorSpawn = 0;
+        this.temporizadorEnemigo = 0;
+        this.temporizadorGnomo = 0;
+        this.gnomos = new ArrayList<>();
         this.entorno = new Entorno(this, "Al Rescate de los Gnomos", 800, 600);
         this.jugador = new Jugador(100, 355);
         this.enemigos = new ArrayList<>();
@@ -38,7 +43,7 @@ public class Juego extends InterfaceJuego {
             return;
         }
 
-        if (temporizadorSpawn == 0) {
+        if (temporizadorEnemigo == 0) {
             int lado = random.nextInt(2);
             int spawn;
             if (lado == 0) {
@@ -47,9 +52,16 @@ public class Juego extends InterfaceJuego {
                 spawn = random.nextInt(350) + 450;
             }
             enemigos.add(new Enemigo(spawn, 0));
-            temporizadorSpawn = 1000;
+            temporizadorEnemigo = 1000;
         } else {
-            temporizadorSpawn -= 1;
+            temporizadorEnemigo -= 1;
+        }
+
+        if (temporizadorGnomo <= 0 && gnomos.size() < 4) {
+            this.gnomos.add(new Gnomo(400, 50));
+            temporizadorGnomo = 1000;
+        } else if (temporizadorGnomo > 0) {
+            temporizadorGnomo -= 1;
         }
 
         boolean moviendoIzquierda = this.entorno.estaPresionada(entorno.TECLA_IZQUIERDA) || this.entorno.estaPresionada('a');
@@ -83,6 +95,34 @@ public class Juego extends InterfaceJuego {
             }
         }
 
+        ListIterator<Gnomo> gnomosIterator = this.gnomos.listIterator();
+        while (gnomosIterator.hasNext()) {
+            Gnomo gnomo = gnomosIterator.next();
+            gnomo.mover();
+            if (!gnomo.estaAterrizado()) {
+                for (Plataforma plataforma : this.plataformas) {
+                    if (gnomo.colisionaCon(plataforma)) {
+                        Direccion[] direcciones = Direccion.values();
+                        Direccion direccion = direcciones[random.nextInt(direcciones.length)];
+                        gnomo.aterrizar(plataforma, direccion);
+                        break;
+                    }
+                }
+            }
+
+            if (gnomo.colisionaCon(jugador)) {
+                gnomosIterator.remove();
+                break;
+            }
+
+            for (Enemigo enemigo : enemigos) {
+                if (gnomo.colisionaCon(enemigo)) {
+                    gnomosIterator.remove();
+                    break;
+                }
+            }
+        }
+
         for (Enemigo enemigo : this.enemigos) {
             enemigo.mover();
             if (enemigo.colisionaCon(jugador)) {
@@ -102,6 +142,7 @@ public class Juego extends InterfaceJuego {
     private void dibujarObjetos() {
         for (Plataforma plataforma : this.plataformas) plataforma.dibujar(this.entorno);
         for (Enemigo enemigo : this.enemigos) enemigo.dibujar(this.entorno);
+        for (Gnomo gnomo : this.gnomos) gnomo.dibujar(this.entorno);
         this.jugador.dibujar(this.entorno);
     }
 
