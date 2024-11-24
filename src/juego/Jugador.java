@@ -105,7 +105,7 @@ public class Jugador implements Colisionable {
 
     public BolaFuego disparar() {
         this.temporizadorBolaFuego = 75;
-        return new BolaFuego(this.x, this.y, this.direccion);
+        return new BolaFuego(this.x, this.y + 15, this.direccion);
     }
 
     public void dibujar(Entorno entorno) {
