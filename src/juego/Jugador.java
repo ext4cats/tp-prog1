@@ -14,6 +14,7 @@ public class Jugador implements Colisionable {
     private static final double VELOCIDAD_TERMINAL = 2;
     private static final double VELOCIDAD_SALTO = 5.0;
     private int temporizadorBolaFuego;
+    private boolean aterrizado;
     private Direccion direccion;
     private double vy;
     private double x;
@@ -21,6 +22,7 @@ public class Jugador implements Colisionable {
     private double vx;
 
     public Jugador(double x, double y) {
+        this.aterrizado = false;
         this.temporizadorBolaFuego = 0;
         this.x = x;
         this.y = y;
@@ -50,7 +52,7 @@ public class Jugador implements Colisionable {
         if (Math.abs(this.vx) < 0.02) this.vx = 0;
 
         // Ajustamos la velocidad del jugador si hay un salto
-        if (salto) {
+        if (salto && this.aterrizado) {
             this.vy = -VELOCIDAD_SALTO;
         }
 
@@ -61,7 +63,11 @@ public class Jugador implements Colisionable {
         this.temporizadorBolaFuego = Math.max(0, this.temporizadorBolaFuego - 1);
     }
 
+    /**
+     * Resuelve colisiones con plataformas "empujando" al jugador fuera de la plataforma.
+     */
     public void resolverColisiones(Plataforma[] plataformas) {
+        boolean aterrizado = false;
         for (Plataforma plataforma : plataformas) {
             if (this.colisionaCon(plataforma)) {
                 double interseccionX = Math.min(
@@ -82,6 +88,7 @@ public class Jugador implements Colisionable {
                     }
                 } else {
                     if (this.bordeAlto() < plataforma.bordeAlto()) {
+                        aterrizado = true;
                         this.y -= interseccionY;
                     } else {
                         this.y += interseccionY;
@@ -89,6 +96,7 @@ public class Jugador implements Colisionable {
                 }
             }
         }
+        this.aterrizado = aterrizado;
     }
 
     public boolean puedeDisparar() {
