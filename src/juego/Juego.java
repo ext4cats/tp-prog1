@@ -184,6 +184,7 @@ public class Juego extends InterfaceJuego {
     }
 
     private void dibujarObjetos() {
+        entorno.dibujarRectangulo(400, 350, 800, 2, 0, Color.DARK_GRAY);
         for (Plataforma plataforma : this.plataformas) plataforma.dibujar(this.entorno);
         for (Enemigo enemigo : this.enemigos) enemigo.dibujar(this.entorno);
         for (Gnomo gnomo : this.gnomos) gnomo.dibujar(this.entorno);
