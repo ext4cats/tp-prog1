@@ -13,6 +13,7 @@ public class Jugador implements Colisionable {
     private static final double GRAVEDAD = 0.1;
     private static final double VELOCIDAD_TERMINAL = 2;
     private static final double VELOCIDAD_SALTO = 5.0;
+    private Direccion direccion;
     private double vy;
     private double x;
     private double y;
@@ -27,10 +28,12 @@ public class Jugador implements Colisionable {
 
     public void acelerarIzquierda() {
         this.vx = Math.max(this.vx - ACELERACION, -VELOCIDAD_MAXIMA);
+        this.direccion = Direccion.IZQUIERDA;
     }
 
     public void acelerarDerecha() {
         this.vx = Math.min(this.vx + ACELERACION, VELOCIDAD_MAXIMA);
+        this.direccion = Direccion.DERECHA;
     }
 
     public void saltar() {
@@ -58,6 +61,10 @@ public class Jugador implements Colisionable {
 
     public void dibujar(Entorno entorno) {
         entorno.dibujarRectangulo(this.x, this.y, ANCHO, ALTO, 0, Color.YELLOW);
+    }
+
+    public Direccion direccion() {
+        return direccion;
     }
 
     @Override

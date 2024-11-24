@@ -15,12 +15,14 @@ public class Juego extends InterfaceJuego {
     private final List<Enemigo> enemigos;
     private final Plataforma[] plataformas;
     private final List<Gnomo> gnomos;
+    private final List<BolaFuego> bolasFuego;
     private int temporizadorEnemigo;
     private int temporizadorGnomo;
     private Jugador jugador;
 
     private Juego() {
         this.random = new Random();
+        this.bolasFuego = new ArrayList<>();
         this.temporizadorEnemigo = 0;
         this.temporizadorGnomo = 0;
         this.gnomos = new ArrayList<>();
@@ -75,6 +77,12 @@ public class Juego extends InterfaceJuego {
         if (saltando) this.jugador.saltar();
         this.jugador.aplicarGravedad();
 
+        boolean disparando = this.entorno.sePresionoBoton(entorno.BOTON_IZQUIERDO) || this.entorno.sePresiono('c');
+        if (disparando) {
+            Direccion direccion = jugador.direccion();
+            bolasFuego.add(new BolaFuego(jugador.x(), jugador.y(), direccion));
+        }
+
         for (Plataforma plataforma : this.plataformas) {
             if (jugador.colisionaCon(plataforma)) {
                 double interseccionX = Math.min(jugador.bordeDerecho() - plataforma.bordeIzquierdo(), plataforma.bordeDerecho() - jugador.bordeIzquierdo());
@@ -91,6 +99,20 @@ public class Juego extends InterfaceJuego {
                     } else {
                         jugador.moverAPosicion(new PosicionFutura(jugador.x(), jugador.y() + interseccionY, jugador.ancho(), jugador.alto()));
                     }
+                }
+            }
+        }
+
+        ListIterator<BolaFuego> bolasFuegoIterator = bolasFuego.listIterator();
+        while (bolasFuegoIterator.hasNext()) {
+            BolaFuego bolaFuego = bolasFuegoIterator.next();
+            bolaFuego.mover();
+            ListIterator<Enemigo> enemigosIterator = enemigos.listIterator();
+            while (enemigosIterator.hasNext()) {
+                Enemigo enemigo = enemigosIterator.next();
+                if (bolaFuego.colisionaCon(enemigo)) {
+                    bolasFuegoIterator.remove();
+                    enemigosIterator.remove();
                 }
             }
         }
@@ -143,6 +165,7 @@ public class Juego extends InterfaceJuego {
         for (Plataforma plataforma : this.plataformas) plataforma.dibujar(this.entorno);
         for (Enemigo enemigo : this.enemigos) enemigo.dibujar(this.entorno);
         for (Gnomo gnomo : this.gnomos) gnomo.dibujar(this.entorno);
+        for (BolaFuego bolaFuego: this.bolasFuego) bolaFuego.dibujar(entorno);
         this.jugador.dibujar(this.entorno);
     }
 
