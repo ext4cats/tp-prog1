@@ -5,11 +5,15 @@ import entorno.Entorno;
 import java.awt.*;
 
 public class Contadores {
+    private final int limitePerdidos;
+    private final int objetivoSalvados;
     private int gnomosPerdidos;
     private int gnomosSalvados;
     private int enemigosEliminados;
 
     public Contadores() {
+        this.limitePerdidos = 15;
+        this.objetivoSalvados = 10;
         this.gnomosPerdidos = 0;
         this.gnomosSalvados = 0;
         this.enemigosEliminados = 0;
@@ -28,9 +32,9 @@ public class Contadores {
     }
 
     public EstadoJuego estadoJuego() {
-        if (this.gnomosPerdidos >= 1) {
+        if (this.gnomosPerdidos >= 15) {
             return EstadoJuego.PERDIDO;
-        } else if (this.gnomosSalvados >= 1) {
+        } else if (this.gnomosSalvados >= 10) {
             return EstadoJuego.GANADO;
         } else {
             return EstadoJuego.EN_PROGRESO;
@@ -39,8 +43,8 @@ public class Contadores {
 
     public void dibujar(Entorno entorno) {
         entorno.cambiarFont("serif", 16, Color.WHITE);
-        entorno.escribirTexto("PERDIDOS: " + gnomosPerdidos, 30, 50);
-        entorno.escribirTexto("SALVADOS: " + gnomosSalvados, 200, 50);
+        entorno.escribirTexto(String.format("PERDIDOS: %d/%d", gnomosPerdidos, limitePerdidos), 30, 50);
+        entorno.escribirTexto(String.format("SALVADOS: %d/%d", gnomosSalvados, objetivoSalvados), 200, 50);
         entorno.escribirTexto("ELIMINADOS: " + enemigosEliminados, 450, 50);
 
         int milisegundos = entorno.tiempo();
