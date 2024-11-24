@@ -6,18 +6,22 @@ import entorno.InterfaceJuego;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Juego extends InterfaceJuego {
+    private final Random random;
     private final Entorno entorno;
     private final List<Enemigo> enemigos;
     private final Plataforma[] plataformas;
+    private int temporizadorSpawn;
     private Jugador jugador;
 
     private Juego() {
+        this.random = new Random();
+        this.temporizadorSpawn = 0;
         this.entorno = new Entorno(this, "Al Rescate de los Gnomos", 800, 600);
         this.jugador = new Jugador(100, 355);
         this.enemigos = new ArrayList<>();
-        enemigos.add(new Enemigo(400, 0));
         this.plataformas = this.generarPlataformas();
     }
 
@@ -32,6 +36,20 @@ public class Juego extends InterfaceJuego {
             entorno.cambiarFont("serif", 32, Color.RED);
             entorno.escribirTexto("GAME OVER", 300, 300);
             return;
+        }
+
+        if (temporizadorSpawn == 0) {
+            int lado = random.nextInt(2);
+            int spawn;
+            if (lado == 0) {
+                spawn = random.nextInt(350);
+            } else {
+                spawn = random.nextInt(350) + 450;
+            }
+            enemigos.add(new Enemigo(spawn, 0));
+            temporizadorSpawn = 1000;
+        } else {
+            temporizadorSpawn -= 1;
         }
 
         boolean moviendoIzquierda = this.entorno.estaPresionada(entorno.TECLA_IZQUIERDA) || this.entorno.estaPresionada('a');

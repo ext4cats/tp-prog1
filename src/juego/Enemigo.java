@@ -25,12 +25,12 @@ public class Enemigo implements Colisionable {
             this.y += VELOCIDAD_VERTICAL;
         } else if (this.direccion == Direccion.DERECHA) {
             this.x += VELOCIDAD_HORIZONTAL;
-            if (this.bordeDerecho() == this.plataforma.bordeDerecho()) {
+            if (this.bordeDerecho() > this.plataforma.bordeDerecho()) {
                 this.direccion = Direccion.IZQUIERDA;
             }
         } else {
             this.x -= VELOCIDAD_HORIZONTAL;
-            if (this.bordeIzquierdo() == this.plataforma.bordeIzquierdo()) {
+            if (this.bordeIzquierdo() < this.plataforma.bordeIzquierdo()) {
                 this.direccion = Direccion.DERECHA;
             }
         }
