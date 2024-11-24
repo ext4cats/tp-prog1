@@ -152,7 +152,7 @@ public class Juego extends InterfaceJuego {
                 }
             }
 
-            if (gnomo.colisionaCon(jugador)) {
+            if (gnomo.colisionaCon(jugador) && gnomo.bordeBajo() > 350) {
                 contadores.agregarGnomoSalvado();
                 gnomosIterator.remove();
                 break;
