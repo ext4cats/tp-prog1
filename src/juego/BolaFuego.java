@@ -7,7 +7,7 @@ import java.awt.*;
 public class BolaFuego implements Colisionable {
     private static final double ANCHO = 8;
     private static final double ALTO = 8;
-    private static final double VELOCIDAD = 1;
+    private static final double VELOCIDAD = 2;
     private final Direccion direccion;
     private final double y;
     private double x;
