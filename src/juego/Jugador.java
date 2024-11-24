@@ -61,6 +61,36 @@ public class Jugador implements Colisionable {
         this.temporizadorBolaFuego = Math.max(0, this.temporizadorBolaFuego - 1);
     }
 
+    public void resolverColisiones(Plataforma[] plataformas) {
+        for (Plataforma plataforma : plataformas) {
+            if (this.colisionaCon(plataforma)) {
+                double interseccionX = Math.min(
+                        this.bordeDerecho() - plataforma.bordeIzquierdo(),
+                        plataforma.bordeDerecho() - this.bordeIzquierdo()
+                );
+
+                double interseccionY = Math.min(
+                        this.bordeBajo() - plataforma.bordeAlto(),
+                        plataforma.bordeBajo() - this.bordeAlto()
+                );
+
+                if (Math.abs(interseccionX) < Math.abs(interseccionY)) {
+                    if (this.bordeIzquierdo() < plataforma.bordeIzquierdo()) {
+                        this.x -= interseccionX;
+                    } else {
+                        this.x += interseccionX;
+                    }
+                } else {
+                    if (this.bordeAlto() < plataforma.bordeAlto()) {
+                        this.y -= interseccionY;
+                    } else {
+                        this.y += interseccionY;
+                    }
+                }
+            }
+        }
+    }
+
     public boolean puedeDisparar() {
         return this.temporizadorBolaFuego == 0;
     }
@@ -68,11 +98,6 @@ public class Jugador implements Colisionable {
     public BolaFuego disparar() {
         this.temporizadorBolaFuego = 75;
         return new BolaFuego(this.x, this.y, this.direccion);
-    }
-
-    public void moverAPosicion(PosicionFutura posicion) {
-        this.x = posicion.x();
-        this.y = posicion.y();
     }
 
     public void dibujar(Entorno entorno) {
