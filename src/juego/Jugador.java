@@ -28,14 +28,37 @@ public class Jugador implements Colisionable {
         this.vy = 0;
     }
 
-    public void acelerarIzquierda() {
-        this.vx = Math.max(this.vx - ACELERACION, -VELOCIDAD_MAXIMA);
-        this.direccion = Direccion.IZQUIERDA;
-    }
+    public void actualizar(boolean izquierda, boolean derecha, boolean salto) {
+        // Acelerar hacia la izquierda si es la direccion
+        if (izquierda) {
+            this.vx = Math.max(this.vx - ACELERACION, -VELOCIDAD_MAXIMA);
+            this.direccion = Direccion.IZQUIERDA;
+        }
 
-    public void acelerarDerecha() {
-        this.vx = Math.min(this.vx + ACELERACION, VELOCIDAD_MAXIMA);
-        this.direccion = Direccion.DERECHA;
+        // Lo mismo, pero para la derecha
+        if (derecha) {
+            this.vx = Math.min(this.vx + ACELERACION, VELOCIDAD_MAXIMA);
+            this.direccion = Direccion.DERECHA;
+        }
+
+        // Aplicamos la velocidad
+        this.x += this.vx;
+        this.y += this.vy;
+
+        // Aplicamos friccion
+        this.vx -= Math.signum(this.vx) * FRICCION;
+        if (Math.abs(this.vx) < 0.02) this.vx = 0;
+
+        // Ajustamos la velocidad del jugador si hay un salto
+        if (salto) {
+            this.vy = -VELOCIDAD_SALTO;
+        }
+
+        // Aplicamos gravedad
+        this.vy = Math.min(this.vy + GRAVEDAD, VELOCIDAD_TERMINAL);
+
+        // Recargamos la bola de fuego del jugador
+        this.temporizadorBolaFuego = Math.max(0, this.temporizadorBolaFuego - 1);
     }
 
     public boolean puedeDisparar() {
@@ -45,28 +68,6 @@ public class Jugador implements Colisionable {
     public BolaFuego disparar() {
         this.temporizadorBolaFuego = 75;
         return new BolaFuego(this.x, this.y, this.direccion);
-    }
-
-    public void recargarBolaFuego() {
-        this.temporizadorBolaFuego = Math.max(0, this.temporizadorBolaFuego - 1);
-    }
-
-    public void saltar() {
-        this.vy = -VELOCIDAD_SALTO;
-    }
-
-    public void aplicarGravedad() {
-        this.vy = Math.min(this.vy + GRAVEDAD, VELOCIDAD_TERMINAL);
-    }
-
-    public void aplicarFriccion() {
-        this.vx -= Math.signum(this.vx) * FRICCION;
-        if (Math.abs(this.vx) < 0.02) this.vx = 0;
-    }
-
-    public void aplicarVelocidad() {
-        this.x += this.vx;
-        this.y += this.vy;
     }
 
     public void moverAPosicion(PosicionFutura posicion) {

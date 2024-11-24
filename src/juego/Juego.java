@@ -85,16 +85,9 @@ public class Juego extends InterfaceJuego {
 
         boolean moviendoIzquierda = this.entorno.estaPresionada(entorno.TECLA_IZQUIERDA) || this.entorno.estaPresionada('a');
         boolean moviendoDerecha = this.entorno.estaPresionada(entorno.TECLA_DERECHA) || this.entorno.estaPresionada('d');
-        if (moviendoIzquierda) this.jugador.acelerarIzquierda();
-        if (moviendoDerecha) this.jugador.acelerarDerecha();
-        this.jugador.aplicarVelocidad();
-        this.jugador.aplicarFriccion();
-
         boolean saltando = this.entorno.sePresiono(entorno.TECLA_ARRIBA) || this.entorno.sePresiono('w');
-        if (saltando) this.jugador.saltar();
-        this.jugador.aplicarGravedad();
+        jugador.actualizar(moviendoIzquierda, moviendoDerecha, saltando);
 
-        jugador.recargarBolaFuego();
         boolean disparando = this.entorno.sePresionoBoton(entorno.BOTON_IZQUIERDO) || this.entorno.sePresiono('c');
         if (disparando && jugador.puedeDisparar()) {
             bolasFuego.add(jugador.disparar());
