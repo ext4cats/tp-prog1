@@ -94,10 +94,10 @@ public class Juego extends InterfaceJuego {
         if (saltando) this.jugador.saltar();
         this.jugador.aplicarGravedad();
 
+        jugador.recargarBolaFuego();
         boolean disparando = this.entorno.sePresionoBoton(entorno.BOTON_IZQUIERDO) || this.entorno.sePresiono('c');
-        if (disparando) {
-            Direccion direccion = jugador.direccion();
-            bolasFuego.add(new BolaFuego(jugador.x(), jugador.y(), direccion));
+        if (disparando && jugador.puedeDisparar()) {
+            bolasFuego.add(jugador.disparar());
         }
 
         for (Plataforma plataforma : this.plataformas) {
@@ -125,12 +125,20 @@ public class Juego extends InterfaceJuego {
             BolaFuego bolaFuego = bolasFuegoIterator.next();
             bolaFuego.mover();
 
+            if (bolaFuego.x() > 850 || bolaFuego.x() < -50) {
+                bolasFuegoIterator.remove();
+                continue;
+            }
+
+            boolean explotaContraPlataforma = false;
             for (Plataforma plataforma : plataformas) {
                 if (bolaFuego.colisionaCon(plataforma)) {
                     bolasFuegoIterator.remove();
-                    break;
+                    explotaContraPlataforma = true;
                 }
             }
+
+            if (explotaContraPlataforma) continue;
 
             ListIterator<Enemigo> enemigosIterator = enemigos.listIterator();
             while (enemigosIterator.hasNext()) {

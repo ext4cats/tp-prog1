@@ -13,6 +13,7 @@ public class Jugador implements Colisionable {
     private static final double GRAVEDAD = 0.1;
     private static final double VELOCIDAD_TERMINAL = 2;
     private static final double VELOCIDAD_SALTO = 5.0;
+    private int temporizadorBolaFuego;
     private Direccion direccion;
     private double vy;
     private double x;
@@ -20,6 +21,7 @@ public class Jugador implements Colisionable {
     private double vx;
 
     public Jugador(double x, double y) {
+        this.temporizadorBolaFuego = 0;
         this.x = x;
         this.y = y;
         this.vx = 0;
@@ -34,6 +36,19 @@ public class Jugador implements Colisionable {
     public void acelerarDerecha() {
         this.vx = Math.min(this.vx + ACELERACION, VELOCIDAD_MAXIMA);
         this.direccion = Direccion.DERECHA;
+    }
+
+    public boolean puedeDisparar() {
+        return this.temporizadorBolaFuego == 0;
+    }
+
+    public BolaFuego disparar() {
+        this.temporizadorBolaFuego = 75;
+        return new BolaFuego(this.x, this.y, this.direccion);
+    }
+
+    public void recargarBolaFuego() {
+        this.temporizadorBolaFuego = Math.max(0, this.temporizadorBolaFuego - 1);
     }
 
     public void saltar() {
@@ -61,10 +76,6 @@ public class Jugador implements Colisionable {
 
     public void dibujar(Entorno entorno) {
         entorno.dibujarRectangulo(this.x, this.y, ANCHO, ALTO, 0, Color.YELLOW);
-    }
-
-    public Direccion direccion() {
-        return direccion;
     }
 
     @Override
