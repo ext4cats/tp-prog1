@@ -121,6 +121,7 @@ public class Juego extends InterfaceJuego {
             while (enemigosIterator.hasNext()) {
                 Enemigo enemigo = enemigosIterator.next();
                 if (bolaFuego.colisionaCon(enemigo)) {
+                    contadores.agregarEnemigoEliminado();
                     bolasFuegoIterator.remove();
                     enemigosIterator.remove();
                 }
@@ -143,12 +144,14 @@ public class Juego extends InterfaceJuego {
             }
 
             if (gnomo.colisionaCon(jugador)) {
+                contadores.agregarGnomoSalvado();
                 gnomosIterator.remove();
                 break;
             }
 
             for (Enemigo enemigo : enemigos) {
                 if (gnomo.colisionaCon(enemigo)) {
+                    contadores.agregarGnomoPerdido();
                     gnomosIterator.remove();
                     break;
                 }
