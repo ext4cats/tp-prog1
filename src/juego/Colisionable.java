@@ -1,6 +1,6 @@
 package juego;
 
-public interface Rectangulo {
+public interface Colisionable {
     double x();
 
     double y();
@@ -25,7 +25,7 @@ public interface Rectangulo {
         return this.x() + this.ancho();
     }
 
-    default boolean colisionaCon(Rectangulo otro) {
+    default boolean colisionaCon(Colisionable otro) {
         return this.bordeIzquierdo() < otro.bordeDerecho() &&
                 this.bordeDerecho() > otro.bordeIzquierdo() &&
                 this.bordeAlto() < otro.bordeBajo() &&

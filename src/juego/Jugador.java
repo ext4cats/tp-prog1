@@ -4,7 +4,7 @@ import entorno.Entorno;
 
 import java.awt.*;
 
-public class Jugador implements Rectangulo {
+public class Jugador implements Colisionable {
     private static final double ANCHO = 30;
     private static final double ALTO = 60;
     private static final double ACELERACION = 0.2;
