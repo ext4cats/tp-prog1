@@ -32,6 +32,26 @@ public class Juego extends InterfaceJuego {
         if (saltando) this.jugador.saltar();
         this.jugador.aplicarGravedad();
 
+        for (Plataforma plataforma : this.plataformas) {
+            if (jugador.colisionaCon(plataforma)) {
+                double interseccionX = Math.min(jugador.bordeDerecho() - plataforma.bordeIzquierdo(), plataforma.bordeDerecho() - jugador.bordeIzquierdo());
+                double interseccionY = Math.min(jugador.bordeBajo() - plataforma.bordeAlto(), plataforma.bordeBajo() - jugador.bordeAlto());
+                if (Math.abs(interseccionX) < Math.abs(interseccionY)) {
+                    if (jugador.bordeIzquierdo() < plataforma.bordeIzquierdo()) {
+                        jugador.moverAPosicion(new PosicionFutura(jugador.x() - interseccionX, jugador.y(), jugador.ancho(), jugador.alto()));
+                    } else {
+                        jugador.moverAPosicion(new PosicionFutura(jugador.x() + interseccionX, jugador.y(), jugador.ancho(), jugador.alto()));
+                    }
+                } else {
+                    if (jugador.bordeAlto() < plataforma.bordeAlto()) {
+                        jugador.moverAPosicion(new PosicionFutura(jugador.x(), jugador.y() - interseccionY, jugador.ancho(), jugador.alto()));
+                    } else {
+                        jugador.moverAPosicion(new PosicionFutura(jugador.x(), jugador.y() + interseccionY, jugador.ancho(), jugador.alto()));
+                    }
+                }
+            }
+        }
+
         this.dibujarObjetos();
     }
 

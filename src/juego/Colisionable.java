@@ -10,19 +10,19 @@ public interface Colisionable {
     double alto();
 
     default double bordeAlto() {
-        return this.y() - this.alto();
+        return this.y() - this.alto() / 2;
     }
 
     default double bordeBajo() {
-        return this.y() + this.alto();
+        return this.y() + this.alto() / 2;
     }
 
     default double bordeIzquierdo() {
-        return this.x() - this.ancho();
+        return this.x() - this.ancho() / 2;
     }
 
     default double bordeDerecho() {
-        return this.x() + this.ancho();
+        return this.x() + this.ancho() / 2;
     }
 
     default boolean colisionaCon(Colisionable otro) {

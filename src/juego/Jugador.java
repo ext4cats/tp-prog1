@@ -51,6 +51,11 @@ public class Jugador implements Colisionable {
         this.y += this.vy;
     }
 
+    public void moverAPosicion(PosicionFutura posicion) {
+        this.x = posicion.x();
+        this.y = posicion.y();
+    }
+
     public void dibujar(Entorno entorno) {
         entorno.dibujarRectangulo(this.x, this.y, ANCHO, ALTO, 0, Color.YELLOW);
     }
