@@ -10,6 +10,7 @@ import java.util.ListIterator;
 import java.util.Random;
 
 public class Juego extends InterfaceJuego {
+    private final Contadores contadores;
     private final Random random;
     private final Entorno entorno;
     private final List<Enemigo> enemigos;
@@ -21,6 +22,7 @@ public class Juego extends InterfaceJuego {
     private Jugador jugador;
 
     private Juego() {
+        this.contadores = new Contadores();
         this.random = new Random();
         this.bolasFuego = new ArrayList<>();
         this.temporizadorEnemigo = 0;
@@ -167,6 +169,7 @@ public class Juego extends InterfaceJuego {
         for (Gnomo gnomo : this.gnomos) gnomo.dibujar(this.entorno);
         for (BolaFuego bolaFuego: this.bolasFuego) bolaFuego.dibujar(entorno);
         this.jugador.dibujar(this.entorno);
+        this.contadores.dibujar(entorno);
     }
 
     private Plataforma[] generarPlataformas() {
