@@ -76,14 +76,14 @@ public class Juego extends InterfaceJuego {
                 spawn = random.nextInt(350) + 450;
             }
             enemigos.add(new Enemigo(spawn, 0));
-            temporizadorEnemigo = 1000;
+            temporizadorEnemigo = 650;
         } else {
             temporizadorEnemigo -= 1;
         }
 
         if (temporizadorGnomo <= 0 && gnomos.size() < 4) {
             this.gnomos.add(new Gnomo(400, 50));
-            temporizadorGnomo = 1000;
+            temporizadorGnomo = 400;
         } else if (temporizadorGnomo > 0) {
             temporizadorGnomo -= 1;
         }
