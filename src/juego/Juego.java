@@ -23,8 +23,11 @@ public class Juego extends InterfaceJuego {
     public void tick() {
         boolean moviendoIzquierda = this.entorno.estaPresionada(entorno.TECLA_IZQUIERDA) || this.entorno.estaPresionada('a');
         boolean moviendoDerecha = this.entorno.estaPresionada(entorno.TECLA_DERECHA) || this.entorno.estaPresionada('d');
+        boolean saltando = this.entorno.sePresiono(entorno.TECLA_ARRIBA) || this.entorno.sePresiono('w');
         if (moviendoIzquierda) this.jugador.acelerarIzquierda();
         if (moviendoDerecha) this.jugador.acelerarDerecha();
+        if (saltando) this.jugador.saltar();
+        this.jugador.aplicarGravedad();
         this.jugador.aplicarVelocidad();
         this.jugador.aplicarFriccion();
         this.dibujarObjetos();

@@ -9,8 +9,11 @@ public class Jugador implements Rectangulo {
     private static final double ALTO = 60;
     private static final double ACELERACION = 0.2;
     private static final double FRICCION = 0.04;
-    private static final double VELOCIDAD_MAXIMA = 1.1;
-    private final double vy;
+    private static final double VELOCIDAD_MAXIMA = 1.2;
+    private static final double GRAVEDAD = 0.1;
+    private static final double VELOCIDAD_TERMINAL = 2;
+    private static final double VELOCIDAD_SALTO = 5.0;
+    private double vy;
     private double x;
     private double y;
     private double vx;
@@ -28,6 +31,14 @@ public class Jugador implements Rectangulo {
 
     public void acelerarDerecha() {
         this.vx = Math.min(this.vx + ACELERACION, VELOCIDAD_MAXIMA);
+    }
+
+    public void saltar() {
+        this.vy = -VELOCIDAD_SALTO;
+    }
+
+    public void aplicarGravedad() {
+        this.vy = Math.min(this.vy + GRAVEDAD, VELOCIDAD_TERMINAL);
     }
 
     public void aplicarFriccion() {
