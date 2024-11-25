@@ -4,13 +4,38 @@ import entorno.Entorno;
 
 import java.awt.*;
 
+/**
+ * Define el estado global del juego, y dibuja el mismo en la interfaz.
+ */
 public class Contadores {
+    /**
+     * El límite de gnomos perdidos antes de perder el juego.
+     */
     private final int limitePerdidos;
+
+    /**
+     * El objetivo de gnomos salvados necesario para ganar el juego.
+     */
     private final int objetivoSalvados;
+
+    /**
+     * La cantidad actual de gnomos perdidos.
+     */
     private int gnomosPerdidos;
+
+    /**
+     * La cantidad actual de gnomos salvados.
+     */
     private int gnomosSalvados;
+
+    /**
+     * La cantidad de enemigos eliminados.
+     */
     private int enemigosEliminados;
 
+    /**
+     * Crea una nueva instancia.
+     */
     public Contadores() {
         this.limitePerdidos = 15;
         this.objetivoSalvados = 10;
@@ -19,18 +44,31 @@ public class Contadores {
         this.enemigosEliminados = 0;
     }
 
+    /**
+     * Agrega un gnomo perdido al contador.
+     */
     public void agregarGnomoPerdido() {
         this.gnomosPerdidos += 1;
     }
 
+    /**
+     * Agrega un gnomo salvado al contador.
+     */
     public void agregarGnomoSalvado() {
         this.gnomosSalvados += 1;
     }
 
+    /**
+     * Agrega un enemigo eliminado al contador.
+     */
     public void agregarEnemigoEliminado() {
         this.enemigosEliminados += 1;
     }
 
+    /**
+     * Decide el estado del juego, basado en el valor de los contadores.
+     * @return Si el juego está en progreso, ganado o perdido.
+     */
     public EstadoJuego estadoJuego() {
         if (this.gnomosPerdidos >= 15) {
             return EstadoJuego.PERDIDO;
@@ -41,6 +79,10 @@ public class Contadores {
         }
     }
 
+    /**
+     * Dibuja los contadores en la interfaz.
+     * @param entorno El entorno al cual dibujar la interfaz.
+     */
     public void dibujar(Entorno entorno) {
         entorno.cambiarFont("serif", 16, Color.WHITE);
         entorno.escribirTexto(String.format("PERDIDOS: %d/%d", gnomosPerdidos, limitePerdidos), 30, 50);
